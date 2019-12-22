@@ -10,7 +10,7 @@ countshot = 1
 # Send and receive function 
 def send(data):
 	json_data = json.dumps(data)
-	target.send(data)
+	target.send(json_data)
 
 def recv():
 	data = ""
