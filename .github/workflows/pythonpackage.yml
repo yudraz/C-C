@@ -20,7 +20,16 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        python -m pip install mss
+        python -m pip install requests
+        pip install socket
+        pip install base64
+        pip install json
+        pip install os
+        pip install shutil
+        pip install sys
+        pip install subprocess
+        python -m pip install --upgrad
     - name: Lint with flake8
       run: |
         pip install flake8
